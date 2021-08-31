@@ -2,7 +2,7 @@
 
 ## Description
 
-The program is designed to rate passwords users insert.
+The program is designed to rate passwords users insert in real time.
 
 ## How to use
 
@@ -10,10 +10,9 @@ You need to run main.py with `python` (or `python3`, if there is a conflict with
 
 ```bash
 $ python main.py
-10 characters are created!
+Insert password: *************
+This password rating: 10
 ```
-
-You can find a result in the **res/** directory of the project.
 
 ## How to install
 
