@@ -1,35 +1,20 @@
 import urwid
 
 
-REPLY = urwid.Text("")
-
-
 def has_digits(pas):
-    for sym in pas:
-        if sym.isdigit():
-            return True
-    return False
+    return any(sym.isdigit() for sym in pas)
 
 
 def has_letters(pas):
-    for sym in pas:
-        if sym.isalpha():
-            return True
-    return False
+    return any(sym.isalpha() for sym in pas)
 
 
 def has_upper_letters(pas):
-    for sym in pas:
-        if sym.isupper():
-            return True
-    return False
+    return any(sym.isupper() for sym in pas)
 
 
 def has_lower_letters(pas):
-    for sym in pas:
-        if sym.islower():
-            return True
-    return False
+    return any(sym.islower() for sym in pas)
 
 
 def is_long(pas):
@@ -37,23 +22,12 @@ def is_long(pas):
 
 
 def has_symbols(pas):
-    for sym in pas:
-        if not sym.isdigit() and not sym.isalpha():
-            return True
-    return False
-
-
-CRITERIONS = [
-    has_digits, has_letters,
-    has_upper_letters,
-    has_lower_letters,
-    is_long, has_symbols
-]
+    return any(not (sym.isdigit() or sym.isalpha()) for sym in pas)
 
 
 def get_rating(pas):
     score = 0
-    for function in CRITERIONS:
+    for function in criterions:
         if function(pas):
             score += 2
     return score
@@ -61,12 +35,23 @@ def get_rating(pas):
 
 def on_ask_change(edit, pas):
     rating = get_rating(pas)
-    REPLY.set_text("This password rating: {}".format(rating))
+    reply.set_text("This password rating: {}".format(rating))
 
 
 def main():
+    
+    global criterions, reply
+
+    criterions = [
+    has_digits, has_letters,
+    has_upper_letters,
+    has_lower_letters,
+    is_long, has_symbols
+    ]
+    
+    reply = urwid.Text("")
     ask = urwid.Edit("Insert password: ", mask="*")
-    menu = urwid.Pile([ask, REPLY])
+    menu = urwid.Pile([ask, reply])
     menu = urwid.Filler(menu, valign='top')
     urwid.connect_signal(ask, 'change', on_ask_change)
     urwid.MainLoop(menu).run()
